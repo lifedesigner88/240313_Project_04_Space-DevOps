@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Space-DevOps.iml" filepath="$PROJECT_DIR$/.idea/Space-DevOps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Space_Backend.iml" filepath="$PROJECT_DIR$/.idea/modules/Space_Backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Space_Backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Space_Backend.main.iml" />
     </modules>
   </component>
