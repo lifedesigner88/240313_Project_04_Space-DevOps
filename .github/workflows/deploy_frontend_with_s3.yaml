@@ -17,11 +17,11 @@ jobs:
           node-version: '20'
 
       - name: npm install
-        working-directory: ./Space_frontend
+        working-directory: ./Space_Frontend
         run: npm install
 
       - name: npm build
-        working-directory: ./Space_frontend
+        working-directory: ./Space_Frontend
         run: npm run build
 
       - name: setup aws cli
@@ -33,5 +33,5 @@ jobs:
 
       - name: deploy to s3
         run: |
-          aws s3 sync ./Space_frontend/dist/spa s3://spacetemp88.shop
+          aws s3 sync ./Space_Frontend/dist/spa s3://spacetemp88.shop
 
