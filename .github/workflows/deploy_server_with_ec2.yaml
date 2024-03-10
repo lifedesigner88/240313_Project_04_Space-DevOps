@@ -40,9 +40,9 @@ jobs:
       - name: pull and run Redis if not exist
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
+          host: ${{ secrets.EC2_HOST1 }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo apt-get update
             sudo apt-get install -y docker.io
