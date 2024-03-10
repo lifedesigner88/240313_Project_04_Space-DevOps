@@ -57,13 +57,13 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             if ! type java > /dev/null; then
-              sudo apt update && sudo apt install openjdk-11-jdk -y
+              sudo apt update && sudo apt install openjdk-17-jdk -y
             else
               echo "java is already installed"
             fi
             sudo killall java || true
-            nohup java -jar /home/${{ secrets.EC2_USERNAME }}/ordering/build/libs/*.jar \
-            --spring.datasource.url=jdbc:mariadb://${{ secrets.DB_HOST }}:3306/ordering \
+            nohup java -jar /home/${{ secrets.EC2_USERNAME }}/Space_Backend/build/libs/*.jar \
+            --spring.datasource.url=jdbc:mariadb://${{ secrets.DB_HOST }}:3306/encorespace \
             --spring.datasource.username=${{ secrets.DB_USERNAME }} \
             --spring.datasource.password=${{ secrets.DB_PASSWORD }} > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
 
@@ -101,12 +101,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             if ! type java > /dev/null; then
-              sudo apt update && sudo apt install openjdk-11-jdk -y
+              sudo apt update && sudo apt install openjdk-17-jdk -y
             else
               echo "java is already installed"
             fi
             sudo killall java || true
-            nohup java -jar /home/${{ secrets.EC2_USERNAME }}/ordering/build/libs/*.jar \
-            --spring.datasource.url=jdbc:mariadb://${{ secrets.DB_HOST }}:3306/ordering \
+            nohup java -jar /home/${{ secrets.EC2_USERNAME }}/Space_Backend/build/libs/*.jar \
+            --spring.datasource.url=jdbc:mariadb://${{ secrets.DB_HOST }}:3306/encorespace \
             --spring.datasource.username=${{ secrets.DB_USERNAME }} \
             --spring.datasource.password=${{ secrets.DB_PASSWORD }} > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
