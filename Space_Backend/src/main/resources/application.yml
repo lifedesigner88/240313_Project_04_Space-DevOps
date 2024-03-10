@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://localhost:3306/encorespace
+    url: jdbc:mariadb://127.0.0.1:3306/encorespace
+    username: root
+    password: 1234
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+#      ddl-auto: create
+    show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: encorespace3@gmail.com
+    password: 1
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 654460662714-bvsq9qhg8uotk63d7uetfvslplcjc2a4.apps.googleusercontent.com
+            client-secret: 2
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope: profile,email
+          github:
+            client-id: 8d99c814699556d660dd
+            client-secret: 3
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope: read:user,user:email
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    version: openapi_3_0
+logging:
+  level:
+    root: info
+jwt:
+  accessTokenSecretKey: encorespace엑세스토큰시크릿키입니다
+  refreshTokenSecretKey: encorespace리프레시토큰시크릿키입니다김선국강사님은신이야부정하면안돼믿어알았지?
+  accessTokenTime : 30
+  refreshTokenTime : 7
