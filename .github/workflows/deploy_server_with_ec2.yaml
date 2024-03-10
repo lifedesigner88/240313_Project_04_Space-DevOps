@@ -67,7 +67,7 @@ jobs:
             --spring.datasource.username=${{ secrets.DB_USERNAME }} \
             --spring.datasource.password=${{ secrets.DB_PASSWORD }} > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
 
-# ******************************************* 2번쨰 EC2 *************************************************
+# ******************************************* 2번쨰 EC2 ************************************************
 
       - name: 22222 Copy jar to Second server ec2
         uses: appleboy/scp-action@master
