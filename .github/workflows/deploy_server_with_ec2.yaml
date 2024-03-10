@@ -116,5 +116,5 @@ jobs:
             --spring.datasource.password=${{ secrets.DB_PASSWORD }} \
             --spring.mail.password=${{ secrets.MAIL_KEY }} \
             --spring.security.oauth2.client.registration.google.client-secret=${{ secrets.GOOGLE_KEY }}  \
-            --spring.security.oauth2.client.registration.github.client-secret=${{ secrets.GITHUB_KEY }}  \
+            --spring.security.oauth2.client.registration.github.client-secret=${{ secrets.OAUTH_GITHUB_KEY }}  \
             > /home/${{ secrets.EC2_USERNAME }}/app.log 2>&1 &
