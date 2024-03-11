@@ -184,8 +184,6 @@ import { useQuasar } from 'quasar';
 import { ref, computed } from 'vue';
 import { axiosInstance } from "boot/axios";
 import ChatListPage from "pages/chat/ChatListPage.vue";
-import {Stomp} from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { BackURL } from "src/services/authService";
 
 export default {
@@ -213,7 +211,6 @@ export default {
     const $q = useQuasar();
     const leftDrawerOpen = ref(false);
     const search = ref('');
-    const message = ref('');
     const style = computed(() => ({
       height: $q.screen.height + 'px'
     }));
@@ -275,9 +272,8 @@ export default {
 
     async chatRoomInfo(room) {
       try {
-
         this.selectedChatRoomId = room.id;
-        const response = await axiosInstance.get('http://localhost:8080/chat/room/enter/' + this.selectedChatRoomId);
+        const response = await axiosInstance.get(BackURL + `/chat/room/enter/` + this.selectedChatRoomId);
         this.loginUserNickName = response.data.message;
 
       } catch (error) {

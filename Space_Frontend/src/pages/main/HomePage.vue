@@ -3,8 +3,9 @@ import {ref} from 'vue'
 // import postDatas from "../../assets/data/postdata"
 import PostList from "pages/post/PostList.vue";
 import {axiosInstance} from "boot/axios";
-const BASE_URL = "http://localhost:8080"
 
+const BASE_URL = process.env.VUE_APP_API_BASE_URL;
+const PLAYDATA_URL = process.env.PLAYDATA_URL;
 
 export default {
   components: {PostList},
@@ -32,11 +33,12 @@ export default {
 
   methods: {
     openLink() {
-      window.open('https://playdata.io/', '_blank');
+      window.open(PLAYDATA_URL, '_blank');
     },
 
     async loadPost() {
       try {
+        console.log(BASE_URL);
         const response = await axiosInstance.get(`${BASE_URL}/api/post/list`);
         this.postDatas = response.data.result
         this.postDatas.reverse()

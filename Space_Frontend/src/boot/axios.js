@@ -5,7 +5,7 @@ import {FountURL} from "src/services/authService";
 
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.VUE_APP_API_BASE_URL
 });
 
 axiosInstance.interceptors.request.use(

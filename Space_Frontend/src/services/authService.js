@@ -3,8 +3,8 @@ import axios from 'axios';
 import { triggerOngoing, triggerNegative } from 'src/utils/notification';
 import {axiosInstance} from "boot/axios";
 
-export const FountURL = 'http://localhost:8081';
-export const BackURL = 'http://localhost:8080';
+export const FountURL = process.env.VUE_APP_FRONT_BASE_URL;
+export const BackURL = process.env.VUE_APP_API_BASE_URL;
 
 export function RegisterApi(formData, $q, router) {
   axios.post(BackURL+'/api/member/create', formData)

@@ -8,13 +8,12 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
-
 const ESLintPlugin = require('eslint-webpack-plugin')
-
-
 const { configure } = require('quasar/wrappers');
 
 module.exports = configure(function (ctx) {
+  require('dotenv').config()
+
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
     supportTS: false,
@@ -54,7 +53,12 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       env: {
-        URL: JSON.stringify(process.env.VUE_APP_API_BASE_URL)
+        // API_BASE_URL: JSON.stringify(process.env.VUE_APP_API_BASE_URL),
+        // WS_URL: JSON.stringify(process.env.VUE_APP_WS_URL)
+        VUE_APP_API_BASE_URL: process.env.VUE_APP_API_BASE_URL,
+        VUE_APP_FRONT_BASE_URL: process.env.VUE_APP_FRONT_BASE_URL,
+        VUE_APP_WS_URL: process.env.VUE_APP_WS_URL,
+        PLAYDATA_URL:process.env.PLAYDATA_URL,
       },
 
       // transpile: false,

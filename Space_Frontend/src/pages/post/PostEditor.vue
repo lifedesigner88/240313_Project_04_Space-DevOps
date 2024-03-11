@@ -50,7 +50,7 @@ import AppSidebar from "components/layout/AppSidebar.vue";
 import {axiosInstance} from "boot/axios";
 import MySpaceList from "pages/space/cardList/MySpaceList.vue";
 
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 export default {
   components: {MySpaceList, AppSidebar},

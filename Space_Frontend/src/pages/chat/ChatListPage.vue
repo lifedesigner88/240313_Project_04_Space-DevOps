@@ -34,6 +34,9 @@
 import {axiosInstance} from "boot/axios";
 import {Stomp} from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { BackURL } from "src/services/authService";
+
+const VUE_APP_WS_URL = process.env.VUE_APP_WS_URL;
 
 export default {
 
@@ -73,7 +76,7 @@ export default {
 
   methods: {
     initializeWebSocket() {
-      const socket = new SockJS('http://localhost:8080/ws'); // 백엔드 WebSocket 엔드포인트 URL
+      const socket = new SockJS(VUE_APP_WS_URL); // 백엔드 WebSocket 엔드포인트 URL
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({}, (frame) => {
         console.log('WebSocket 연결됨');
@@ -128,7 +131,7 @@ export default {
       if (this.chatRoomId === null) {
         return;
       }
-      axiosInstance.get("http://localhost:8080/chat/room/enter/" + this.chatRoomId)
+      axiosInstance.get(BackURL + `/chat/room/enter/` + this.chatRoomId)
         .then(response => {
           this.chatMessage = response.data.result;
           this.loginUser = response.data.message;

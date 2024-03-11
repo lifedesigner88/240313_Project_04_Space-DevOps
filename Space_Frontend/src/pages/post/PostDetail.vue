@@ -3,7 +3,7 @@ import {axiosInstance} from "boot/axios";
 import AppSidebar from "src/components/layout/AppSidebar.vue";
 import moment from 'moment';
 
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 export default {
   name: "PostDetail",
