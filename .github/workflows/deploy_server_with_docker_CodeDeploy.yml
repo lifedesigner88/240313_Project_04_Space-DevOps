@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - main  # or any other branch name
+      - dev
 
 env:
   IMAGE_NAME: space_backend
@@ -29,7 +29,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
 
-      - name: Configure AWS Credentials  #  CodeDeployFullAccess#  AmazonEC2FullAccess 필요함  # 기존 S3 풀 엑세스에 추가했음.
+      - name: Configure AWS Credentials # AmazonSNSFullAccess"를 권한 기존 S3 풀 엑세스에 추가했음.
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY }}
