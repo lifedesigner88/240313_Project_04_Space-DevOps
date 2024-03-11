@@ -1,0 +1,94 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main  # or any other branch name
+
+env:
+  IMAGE_NAME: space_backend
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Space_Backend
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Configure AWS Credentials  #  CodeDeployFullAccess#  AmazonEC2FullAccess 필요함  # 기존 S3 풀 엑세스에 추가했음.
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_S3_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_S3_SECRET_KEY }}
+          aws-region: "ap-northeast-2"
+
+      - name: Trigger AWS CodeDeploy through SNS  #ARN(Amazon Resource Name)-Simple Notification Service
+        run: |
+          aws sns publish --topic-arn ${{ secrets.AWS_SNS_TOPIC_ARN }} --message "Docker image ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest has been pushed to Docker Hub"
+
+  
+  
+  
+  
+
+#
+#jobs:
+#  build-and-push-image-to-dockerhub:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      - name: Build Docker Image
+#        working-directory: ./ordering_server
+#        run: docker build -t :v1 .
+#
+#      - name: DockerHub Login
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: Push Docker Image to DockerHub
+#        run: docker push lifedesigner88/space_backend:v1
+#
+#
+#      - name: ec2 ssh login and docker run
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.EC2_HOST1 }}
+#          username: ${{ secrets.EC2_USERNAME }}
+#          key: ${{ secrets.EC2_SSH_KEY }}
+#          # type docker : docker 명령어가 현재 시스템에 존재하는 지 확인
+#          # /dev/null : 명령어의 출력을 무시할때 사용
+#          # curl -s http응답을 받아본다.
+#          script: |
+#            if ! type docker > /dev/null ; then
+#              curl -s https://get.docker.com -o get-docker.sh
+#              sudo sh get-docker.sh
+#            fi
+#            sudo docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+#
+#            sudo docker pull lifedesigner88/ordering-backend:v2
+#            sudo docker rm -f ordering-backend || ture
+#
+#            sudo docker run -d --name ordering-backend -p 80:8080 \
+#            -e SPRING_DATASOURCE_URL=jdbc:mariadb://${{ secrets.DB_HOST }}:3306/ordering \
+#            -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
+#            -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} lifedesigner88/ordering-backend:v2
+#
