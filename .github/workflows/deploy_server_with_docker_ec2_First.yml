@@ -66,8 +66,7 @@ jobs:
             -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
             -e SPRING_MAIL_PASSWORD=${{ secrets.MAIL_KEY }} \
             -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT-SECRET=${{ secrets.GOOGLE_KEY }}  \
-            -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT-SECRET=${{ secrets.OAUTH_GITHUB_KEY }}  \          
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT-SECRET=${{ secrets.OAUTH_GITHUB_KEY }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
             
 
 # *********************************** EC2 second ***********************************
