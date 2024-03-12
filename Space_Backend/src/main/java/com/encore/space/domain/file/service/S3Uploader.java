@@ -23,15 +23,15 @@ public class S3Uploader {
         amazonS3Client.putObject(new PutObjectRequest(bucketName, keyName, file));
 
         // Generate the pre-signed URL
-        java.util.Date expiration = new java.util.Date();
-        long expTimeMillis = expiration.getTime();
-        expTimeMillis += 1000 * 60 * 60 * 24 * 7; // Add 7 days
-        expiration.setTime(expTimeMillis);
+//        java.util.Date expiration = new java.util.Date();
+//        long expTimeMillis = expiration.getTime();
+//        expTimeMillis += 1000 * 60 * 60 * 24 * 7; // Add 7 days
+//        expiration.setTime(expTimeMillis);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucketName, keyName)
-                        .withMethod(HttpMethod.GET)
-                        .withExpiration(expiration);
+                        .withMethod(HttpMethod.GET);
+//                        .withExpiration(expiration);
 
         URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 
