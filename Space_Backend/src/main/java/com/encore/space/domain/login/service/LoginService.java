@@ -83,6 +83,10 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         }
 
         // 자동 회원가입
+        log.info("Name: " + info.getName());
+        log.info("Email: " + info.getEmail());
+        log.info("Picture: " + info.getPicture());
+        log.info("ProviderId: " + info.getProviderId());
         if(info != null && !memberService.existsByEmail(Objects.requireNonNull(info).getEmail())){
             memberService.memberCreate(
                     MemberReqDto.builder()

@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - dev  # or any other branch name
+      - main  # or any other branch name
 
 env:
   IMAGE_NAME: space_backend
