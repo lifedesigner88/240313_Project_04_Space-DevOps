@@ -64,7 +64,7 @@ jwt:
   accessTokenTime : 30
   refreshTokenTime : 7
 
-
+# s3 업로드 용
 cloud:
   aws:
     credentials:

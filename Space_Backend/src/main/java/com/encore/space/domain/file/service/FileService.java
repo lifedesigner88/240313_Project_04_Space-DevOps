@@ -53,36 +53,18 @@ public class FileService {
 
         //썸네일 업로드
     public void setThumbnail(MultipartFile thumbnail,Post post) {
-
-        // Convert multipart file to file
-        File file = null;
+        String bucketName = "spaceimages-s33";
+        String keyName = thumbnail.getOriginalFilename();
         try {
-            file = convertMultipartFileToFile(thumbnail);
+            File file = convertMultipartFileToFile(thumbnail);
+            String fileurl = s3Uploader.uploadFile(bucketName, keyName, file);
+            String isThumbnail="Y";
+            AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, fileurl, isThumbnail));
+            post.setThumbnail(attachFile.getId().toString());
+
         } catch (Exception e) {
             throw new RuntimeException(e + "파일 관련 에러 발생");
         }
-
-        // Set your bucket name
-        String bucketName = "spaceimages-s33";
-        String keyName = thumbnail.getOriginalFilename();
-
-        // Upload file and get URL
-        System.out.println(s3Uploader.uploadFile(bucketName, keyName, file));
-
-
-
-//        UUID uuid = UUID.randomUUID();
-//        String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
-//        Path thumbnailPath = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", thumbnailFileName);
-//        try {
-//            byte[] bytes = thumbnail.getBytes();
-//            Files.write(thumbnailPath, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-//            String isThumbnail="Y";
-//            AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, thumbnailPath.toString(), isThumbnail));
-//            post.setThumbnail(attachFile.getId().toString());
-//        } catch (IOException e) {
-//            throw new IllegalArgumentException("image not available");
-//        }
     }
 
 
