@@ -42,9 +42,10 @@ public class FileService {
     }
 
     private File convertMultipartFileToFile(MultipartFile thumbnail) throws Exception {
-        UUID uuid = UUID.randomUUID();
-        String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
-        File convertedFile = new File(thumbnailFileName);
+//        UUID uuid = UUID.randomUUID();
+//        String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
+        String thumbnailFileName = thumbnail.getOriginalFilename();
+        File convertedFile = new File(Objects.requireNonNull(thumbnailFileName));
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(thumbnail.getBytes());
         }
@@ -58,6 +59,7 @@ public class FileService {
         try {
             File file = convertMultipartFileToFile(thumbnail);
             String fileurl = s3Uploader.uploadFile(bucketName, keyName, file);
+            System.out.println(fileurl);
             String isThumbnail="Y";
             AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, fileurl, isThumbnail));
             post.setThumbnail(attachFile.getId().toString());
@@ -98,17 +100,17 @@ public class FileService {
 
     //첨부파일 업로드
     public void uploadAttachFiles(List<MultipartFile> attachFileList, Post post, List<String> imgUrlList) throws EntityNotFoundException, IllegalArgumentException {
-        for (int i = 0; i< attachFileList.size(); i++) {
+        for (MultipartFile multipartFile : attachFileList) {
             try {
-                if(!Objects.requireNonNull(attachFileList.get(i).getOriginalFilename()).isEmpty()){
+                if (!Objects.requireNonNull(multipartFile.getOriginalFilename()).isEmpty()) {
                     UUID uuid = UUID.randomUUID();
-                    String attachFileName = uuid + "_" + attachFileList.get(i).getOriginalFilename();
+                    String attachFileName = uuid + "_" + multipartFile.getOriginalFilename();
                     Path path = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", attachFileName);        //게시판 ID 값 뒤에 붙여보기
-                    String isThumbnail="N";
-                    byte[] bytes = attachFileList.get(i).getBytes();
+                    String isThumbnail = "N";
+                    byte[] bytes = multipartFile.getBytes();
                     Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-                    AttachFile attachFile = fileRepository.save(changeType.toAttachFile(attachFileList.get(i),post,System.getProperty("user.dir") + "/src/main/java/com/encore/space/images/"+ attachFileName ,isThumbnail));
-                    post.setContents(post.getContents().replaceAll(imgUrlList.get(0),"http://localhost:8080/api/file/images/"+attachFile.getId()+"/image"));
+                    AttachFile attachFile = fileRepository.save(changeType.toAttachFile(multipartFile, post, System.getProperty("user.dir") + "/src/main/java/com/encore/space/images/" + attachFileName, isThumbnail));
+                    post.setContents(post.getContents().replaceAll(imgUrlList.get(0), "http://localhost:8080/api/file/images/" + attachFile.getId() + "/image"));
 
                 }
             } catch (IOException e) {
@@ -116,6 +118,30 @@ public class FileService {
             }
         }
     }
+
+//    //첨부파일 업로드
+//    public void uploadAttachFiles(List<MultipartFile> attachFileList, Post post, List<String> imgUrlList) throws EntityNotFoundException, IllegalArgumentException {
+//        for (int i = 0; i< attachFileList.size(); i++) {
+//            try {
+//                if(!Objects.requireNonNull(attachFileList.get(i).getOriginalFilename()).isEmpty()){
+//                    UUID uuid = UUID.randomUUID();
+//                    String attachFileName = uuid + "_" + attachFileList.get(i).getOriginalFilename();
+//                    Path path = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", attachFileName);        //게시판 ID 값 뒤에 붙여보기
+//                    String isThumbnail="N";
+//                    byte[] bytes = attachFileList.get(i).getBytes();
+//                    Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+//                    AttachFile attachFile = fileRepository.save(changeType.toAttachFile(attachFileList.get(i),post,System.getProperty("user.dir") + "/src/main/java/com/encore/space/images/"+ attachFileName ,isThumbnail));
+//                    post.setContents(post.getContents().replaceAll(imgUrlList.get(0),"http://localhost:8080/api/file/images/"+attachFile.getId()+"/image"));
+//
+//                }
+//            } catch (IOException e) {
+//                throw new IllegalArgumentException("file not available");
+//            }
+//        }
+//    }
+
+
+
 
     //파일 목록 조회
     public List<AttachFile> getFileList(Long postId) {
