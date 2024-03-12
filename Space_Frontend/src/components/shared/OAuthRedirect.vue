@@ -28,7 +28,8 @@ export default {
       localStorage.setItem("accessToken",accessToken)
       document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
     }
-    location.href=FountURL;
+    // location.href=FountURL;
+    console.log(this.getAccessTokenFromCookie());
   }
 }
 </script>
