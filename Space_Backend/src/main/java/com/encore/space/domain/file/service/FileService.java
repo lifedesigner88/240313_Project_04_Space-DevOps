@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -26,30 +29,79 @@ import java.util.UUID;
 @Service
 @Transactional
 public class FileService {
+
     private final FileRepository fileRepository;
     private final ChangeType changeType;
+    private final S3Uploader s3Uploader;
 
     @Autowired
-    public FileService(FileRepository fileRepository, ChangeType changeType) {
+    public FileService(FileRepository fileRepository, ChangeType changeType, S3Uploader s3Uploader) {
         this.fileRepository = fileRepository;
         this.changeType = changeType;
+        this.s3Uploader = s3Uploader;
     }
 
-    //썸네일 업로드
-    public void setThumbnail(MultipartFile thumbnail,Post post){
+    private File convertMultipartFileToFile(MultipartFile thumbnail) throws Exception {
         UUID uuid = UUID.randomUUID();
         String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
-        Path thumbnailPath = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", thumbnailFileName);
-        try {
-            byte[] bytes = thumbnail.getBytes();
-            Files.write(thumbnailPath, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            String isThumbnail="Y";
-            AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, thumbnailPath.toString(), isThumbnail));
-            post.setThumbnail(attachFile.getId().toString());
-        } catch (IOException e) {
-            throw new IllegalArgumentException("image not available");
+        File convertedFile = new File(thumbnailFileName);
+        try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
+            fos.write(thumbnail.getBytes());
         }
+        return convertedFile;
     }
+
+        //썸네일 업로드
+    public void setThumbnail(MultipartFile thumbnail,Post post) {
+
+        // Convert multipart file to file
+        File file = null;
+        try {
+            file = convertMultipartFileToFile(thumbnail);
+        } catch (Exception e) {
+            throw new RuntimeException(e + "파일 관련 에러 발생");
+        }
+
+        // Set your bucket name
+        String bucketName = "spaceimages-s33";
+        String keyName = thumbnail.getOriginalFilename();
+
+        // Upload file and get URL
+        System.out.println(s3Uploader.uploadFile(bucketName, keyName, file));
+
+
+
+//        UUID uuid = UUID.randomUUID();
+//        String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
+//        Path thumbnailPath = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", thumbnailFileName);
+//        try {
+//            byte[] bytes = thumbnail.getBytes();
+//            Files.write(thumbnailPath, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+//            String isThumbnail="Y";
+//            AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, thumbnailPath.toString(), isThumbnail));
+//            post.setThumbnail(attachFile.getId().toString());
+//        } catch (IOException e) {
+//            throw new IllegalArgumentException("image not available");
+//        }
+    }
+
+
+
+//    //썸네일 업로드
+//    public void setThumbnail(MultipartFile thumbnail,Post post){
+//        UUID uuid = UUID.randomUUID();
+//        String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
+//        Path thumbnailPath = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", thumbnailFileName);
+//        try {
+//            byte[] bytes = thumbnail.getBytes();
+//            Files.write(thumbnailPath, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+//            String isThumbnail="Y";
+//            AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, thumbnailPath.toString(), isThumbnail));
+//            post.setThumbnail(attachFile.getId().toString());
+//        } catch (IOException e) {
+//            throw new IllegalArgumentException("image not available");
+//        }
+//    }
 
     public void updateThumbnail(MultipartFile thumbnail,Post post){
         if(post.getThumbnail()!=null){

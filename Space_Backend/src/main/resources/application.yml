@@ -1,4 +1,5 @@
 spring:
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
 #    url: jdbc:mariadb://localhost:3306/encorespace
@@ -25,7 +26,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: encorespace3@gmail.com
-    password: 1
+    password: kqoyyfbvyugyrwly
     properties:
       mail:
         smtp:
@@ -38,14 +39,15 @@ spring:
         registration:
           google:
             client-id: 654460662714-bvsq9qhg8uotk63d7uetfvslplcjc2a4.apps.googleusercontent.com
-            client-secret: 1
+            client-secret: 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
             redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             scope: profile,email
           github:
             client-id: 8d99c814699556d660dd
-            client-secret: 1
+            client-secret: 95cf83558d0f9b6f9ec1157709ceac8bef26c2eb
             redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             scope: read:user,user:email
+
 
 springdoc:
   swagger-ui:
@@ -61,3 +63,15 @@ jwt:
   refreshTokenSecretKey: encorespace리프레시토큰시크릿키입니다김선국강사님은신이야부정하면안돼믿어알았지?
   accessTokenTime : 30
   refreshTokenTime : 7
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAVRUVV3Z2HDQWVHZW
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

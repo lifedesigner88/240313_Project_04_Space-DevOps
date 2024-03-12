@@ -60,6 +60,9 @@ dependencies {
     // oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+    // S3 업로드를 위한 의존성 추가
+//    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
