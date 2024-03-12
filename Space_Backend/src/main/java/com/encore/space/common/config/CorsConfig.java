@@ -15,7 +15,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("https://spacetemp88.shop", "http://spacetemp88.shop", "http://www.spacetemp88.shop", "http://www.spacetemp88.shop"));
+        config.setAllowedOrigins(List.of("https://spacetemp88.shop", "http://spacetemp88.shop", "http://www.spacetemp88.shop", "https://www.spacetemp88.shop"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
