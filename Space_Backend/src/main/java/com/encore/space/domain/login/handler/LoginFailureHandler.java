@@ -20,6 +20,6 @@ import java.io.PrintWriter;
 public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.sendRedirect("http://localhost:8081/oauth2/redirect");
+        response.sendRedirect("https://www.spacetemp88.shop/oauth2/redirect");
     }
 }

@@ -60,7 +60,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         cookie.setPath("/"); // 모든 경로에 대해 쿠키 전송
         response.addCookie(cookie);
 
-        String redirectUrl = "http://localhost:8081/oauth2/redirect";
+        String redirectUrl = "https://www.spacetemp88.shop/oauth2/redirect";
 
         // 클라이언트로 리다이렉트
         response.setStatus(HttpStatus.FOUND.value());
