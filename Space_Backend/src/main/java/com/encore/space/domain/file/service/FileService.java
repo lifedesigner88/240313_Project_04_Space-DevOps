@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,7 +20,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -42,10 +40,7 @@ public class FileService {
     }
 
     private File convertMultipartFileToFile(MultipartFile thumbnail) throws Exception {
-//        UUID uuid = UUID.randomUUID();
-//        String thumbnailFileName = uuid + "_thumbnail_" + thumbnail.getOriginalFilename();
-        String thumbnailFileName = thumbnail.getOriginalFilename();
-        File convertedFile = new File(Objects.requireNonNull(thumbnailFileName));
+        File convertedFile = new File(Objects.requireNonNull(thumbnail.getOriginalFilename()));
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(thumbnail.getBytes());
         }
@@ -55,11 +50,16 @@ public class FileService {
         //썸네일 업로드
     public void setThumbnail(MultipartFile thumbnail,Post post) {
         String bucketName = "spaceimages-s33";
-        String keyName = thumbnail.getOriginalFilename();
+        UUID uuid = UUID.randomUUID();
+        String keyName = uuid + "_" + thumbnail.getOriginalFilename();
         try {
             File file = convertMultipartFileToFile(thumbnail);
             String fileurl = s3Uploader.uploadFile(bucketName, keyName, file);
+
+            System.out.println();
             System.out.println(fileurl);
+            System.out.println();
+
             String isThumbnail="Y";
             AttachFile attachFile = fileRepository.save(changeType.toAttachFile(thumbnail,post, fileurl, isThumbnail));
             post.setThumbnail(attachFile.getId().toString());
@@ -100,21 +100,22 @@ public class FileService {
 
     //첨부파일 업로드
     public void uploadAttachFiles(List<MultipartFile> attachFileList, Post post, List<String> imgUrlList) throws EntityNotFoundException, IllegalArgumentException {
-        for (MultipartFile multipartFile : attachFileList) {
+        String bucketName = "spaceimages-s33";
+        for (int i = 1; i< attachFileList.size(); i++) {
             try {
-                if (!Objects.requireNonNull(multipartFile.getOriginalFilename()).isEmpty()) {
+                    MultipartFile multipartFile = attachFileList.get(i);
+                    File file = convertMultipartFileToFile(multipartFile);
+                    String attachedFileName = multipartFile.getOriginalFilename();
                     UUID uuid = UUID.randomUUID();
-                    String attachFileName = uuid + "_" + multipartFile.getOriginalFilename();
-                    Path path = Paths.get(System.getProperty("user.dir") + "/src/main/java/com/encore/space/images", attachFileName);        //게시판 ID 값 뒤에 붙여보기
-                    String isThumbnail = "N";
-                    byte[] bytes = multipartFile.getBytes();
-                    Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-                    AttachFile attachFile = fileRepository.save(changeType.toAttachFile(multipartFile, post, System.getProperty("user.dir") + "/src/main/java/com/encore/space/images/" + attachFileName, isThumbnail));
-                    post.setContents(post.getContents().replaceAll(imgUrlList.get(0), "http://localhost:8080/api/file/images/" + attachFile.getId() + "/image"));
-
-                }
+                    String keyName = uuid + "_" + attachedFileName;
+                    String isThumbnail="N";
+                    String fileurl = s3Uploader.uploadFile(bucketName, keyName, file);
+                    AttachFile attachFile = fileRepository.save(changeType.toAttachFile(attachFileList.get(i),post, fileurl ,isThumbnail));
+                    post.setContents(post.getContents().replaceAll(imgUrlList.get(0),"https://server.spacetemp88.shop/api/file/images/"+attachFile.getId()+"/image"));
             } catch (IOException e) {
                 throw new IllegalArgumentException("file not available");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }
