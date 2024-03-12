@@ -26,7 +26,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: encorespace3@gmail.com
-    password: kqoyyfbvyugyrwly
+    password: 1
     properties:
       mail:
         smtp:
@@ -39,12 +39,12 @@ spring:
         registration:
           google:
             client-id: 654460662714-bvsq9qhg8uotk63d7uetfvslplcjc2a4.apps.googleusercontent.com
-            client-secret: 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
+            client-secret: 1
             redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             scope: profile,email
           github:
             client-id: 8d99c814699556d660dd
-            client-secret: 95cf83558d0f9b6f9ec1157709ceac8bef26c2eb
+            client-secret: 1
             redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             scope: read:user,user:email
 
@@ -68,8 +68,8 @@ jwt:
 cloud:
   aws:
     credentials:
-      access-key: AKIAVRUVV3Z2HDQWVHZW
-      secret-key: 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
+      access-key: 1
+      secret-key: 1
     region:
       static: ap-northeast-2
       auto: false
