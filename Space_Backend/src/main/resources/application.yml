@@ -15,7 +15,8 @@ spring:
     show-sql: true
   data:
     redis:
-      host: host.docker.internal
+#      host: host.docker.internal
+      host: localhost
       port: 6379
   mvc:
     path match:
