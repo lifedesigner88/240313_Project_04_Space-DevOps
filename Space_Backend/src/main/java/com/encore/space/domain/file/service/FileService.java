@@ -120,6 +120,8 @@ public class FileService {
         }
     }
 
+
+//    as
 //    //첨부파일 업로드
 //    public void uploadAttachFiles(List<MultipartFile> attachFileList, Post post, List<String> imgUrlList) throws EntityNotFoundException, IllegalArgumentException {
 //        for (int i = 0; i< attachFileList.size(); i++) {
