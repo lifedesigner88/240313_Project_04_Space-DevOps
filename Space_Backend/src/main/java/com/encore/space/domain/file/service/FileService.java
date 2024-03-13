@@ -47,7 +47,7 @@ public class FileService {
         return convertedFile;
     }
 
-        //썸네일 업로드
+        //썸네일 Url Post에 추가 & S3에 파일 업로드
     public void setThumbnail(MultipartFile thumbnail,Post post) {
         String bucketName = "spaceimages-s33";
         UUID uuid = UUID.randomUUID();
