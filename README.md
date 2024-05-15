@@ -1,5 +1,9 @@
 # Encore Space 배포 아키텍쳐
 
+# 희망 아키텍쳐
+![image](https://github.com/lifedesigner88/240313_Project_04_Space-DevOps/assets/123573918/f5410a56-e5da-4402-bf7c-76998843023b)
+
+# 최종아키텍쳐
 <p align="center">
     <img src="/Document/img/current_architecture.png"/>
 </p>
