@@ -271,8 +271,4 @@ jobs:
 
 
 
-## 4. 시연
-
-## 서비스 시연
-* https://www.spaceencore.shop/  SSH HTTPS 인증서를 통한 접속
 
