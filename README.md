@@ -81,7 +81,12 @@ jobs:
       # Quasar 이기 때문에 dist 밑에 spa 폴더로 이동
       # copy는 delete 없이 덮어쓰기만 하지만 sync를 사용해서 변경이 있는 부분만 수정하게 됨.
           aws s3 sync ./Space_Frontend/dist/spa s3://spaceencore.shop
+
 ```
+![image](https://github.com/lifedesigner88/240313_Project_04_Space-DevOps/assets/123573918/34dd363e-0835-4e59-8e65-aa630ce71b10)
+
+
+---
 
 ### Backend 방식
 
@@ -103,9 +108,12 @@ Github Action, ECR, S3, CodeDeploy를 활용한 블루/그린 배포 방식
 
 <br/>
 
+![image](https://github.com/lifedesigner88/240313_Project_04_Space-DevOps/assets/123573918/5a6fb9b1-f790-440f-b4c4-54572d4ff492)
+
 ---
 
 <br/>
+
 
 # 2. 도커 코드
 
