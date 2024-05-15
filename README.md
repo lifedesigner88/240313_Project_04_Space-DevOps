@@ -4,9 +4,8 @@
 ![image](https://github.com/lifedesigner88/240313_Project_04_Space-DevOps/assets/123573918/f5410a56-e5da-4402-bf7c-76998843023b)
 
 # 최종아키텍쳐
-<p align="center">
-    <img src="/Document/img/current_architecture.png"/>
-</p>
+![image](https://github.com/lifedesigner88/240313_Project_04_Space-DevOps/assets/123573918/f9d3b5fc-d1c7-44bd-b343-1360a9cec210)
+
 
 
 ## 1. 도전한 기술
